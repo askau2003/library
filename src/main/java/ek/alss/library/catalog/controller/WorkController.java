@@ -1,6 +1,6 @@
 package ek.alss.library.catalog.controller;
 
-import ek.alss.library.catalog.model.Work;
+import ek.alss.library.catalog.dto.WorkDto;
 import ek.alss.library.catalog.service.WorkService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +19,15 @@ public class WorkController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Work>> getAllWorks() {
-        List<Work> works = workService.getAllWorks();
+    public ResponseEntity<List<WorkDto>> getAllWorks() {
+        List<WorkDto> works = workService.getAllWorks();
         return ResponseEntity.ok(works);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Work> getWorkById(@PathVariable Long id) {
+    public ResponseEntity<WorkDto> getWorkById(@PathVariable Long id) {
         try {
-            Work work = workService.getWorkById(id);
+            WorkDto work = workService.getWorkById(id);
             return ResponseEntity.ok(work);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -35,20 +35,20 @@ public class WorkController {
     }
 
     @PostMapping
-    public ResponseEntity<Work> createWork(@RequestBody Work work) {
+    public ResponseEntity<WorkDto> createWork(@RequestBody WorkDto work) {
         try {
-            workService.createWork(work);
-            return ResponseEntity.status(HttpStatus.CREATED).body(work);
+            WorkDto createdWork = workService.createWork(work);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdWork);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Work> updateWork(@PathVariable Long id, @RequestBody Work work) {
+    public ResponseEntity<WorkDto> updateWork(@PathVariable Long id, @RequestBody WorkDto work) {
         try {
-            workService.updateWork(id,work);
-            return ResponseEntity.ok(work);
+            WorkDto updatedWork = workService.updateWork(id,work);
+            return ResponseEntity.ok(updatedWork);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -65,9 +65,9 @@ public class WorkController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Work>> searchWorkByTitle(@RequestParam String title) {
+    public ResponseEntity<List<WorkDto>> searchWorkByTitle(@RequestParam String title) {
         try {
-            List<Work> work = workService.searchWorks(title);
+            List<WorkDto> work = workService.searchWorks(title);
             return ResponseEntity.ok(work);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
