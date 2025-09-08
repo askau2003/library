@@ -1,4 +1,10 @@
 package ek.alss.library.catalog.dto;
 
-public record SubjectDto(Long id, String name) {
+import jakarta.validation.constraints.NotBlank;
+
+public record SubjectDto(
+        Long id,
+
+        @NotBlank(message = "Subject must have a name")
+        String name) {
 }

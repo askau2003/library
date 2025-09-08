@@ -2,6 +2,7 @@ package ek.alss.library.catalog.controller;
 
 import ek.alss.library.catalog.dto.AuthorDto;
 import ek.alss.library.catalog.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto author) {
+    public ResponseEntity<AuthorDto> createAuthor(@Valid @RequestBody AuthorDto author) {
         try {
             AuthorDto createdAuthor = authorService.createAuthor(author);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdAuthor);
@@ -45,7 +46,7 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AuthorDto> updateAuthor(@PathVariable Long id, @RequestBody AuthorDto author) {
+    public ResponseEntity<AuthorDto> updateAuthor(@PathVariable Long id, @Valid @RequestBody AuthorDto author) {
         try {
             AuthorDto updatedAuthor = authorService.updateAuthor(id, author);
             return ResponseEntity.ok(updatedAuthor);

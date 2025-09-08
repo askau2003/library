@@ -2,6 +2,7 @@ package ek.alss.library.catalog.controller;
 
 import ek.alss.library.catalog.dto.SubjectDto;
 import ek.alss.library.catalog.service.SubjectService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class SubjectController {
     }
 
     @PostMapping
-    public ResponseEntity<SubjectDto> createSubject(@RequestBody SubjectDto subject) {
+    public ResponseEntity<SubjectDto> createSubject(@Valid @RequestBody SubjectDto subject) {
         try {
             SubjectDto createdSubject = subjectService.createSubject(subject);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdSubject);
@@ -45,7 +46,7 @@ public class SubjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SubjectDto> updateSubject(@PathVariable Long id, @RequestBody SubjectDto subject) {
+    public ResponseEntity<SubjectDto> updateSubject(@PathVariable Long id, @Valid @RequestBody SubjectDto subject) {
         try {
             SubjectDto updatedSubject = subjectService.updateSubject(id, subject);
             return ResponseEntity.ok(updatedSubject);

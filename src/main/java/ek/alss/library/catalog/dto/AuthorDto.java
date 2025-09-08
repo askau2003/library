@@ -1,6 +1,10 @@
 package ek.alss.library.catalog.dto;
 
-import ek.alss.library.catalog.model.Work;
+import jakarta.validation.constraints.*;
 
-public record AuthorDto(Long id, String name) {
+public record AuthorDto(
+        Long id,
+
+        @NotBlank(message = "Author must have a name")
+        String name) {
 }
