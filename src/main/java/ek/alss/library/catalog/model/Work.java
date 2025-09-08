@@ -16,8 +16,12 @@ public class Work {
     @Enumerated(EnumType.STRING)
     private WorkType workType;
     private String details;
-    private String authors;
-    private String subjects;
+
+    @ManyToMany
+    private List<Author> authors;
+
+    @ManyToMany
+    private List<Subject> subjects;
 
     @OneToMany(mappedBy = "work")
     private List<Edition> editions = new ArrayList<>();
@@ -25,7 +29,7 @@ public class Work {
     public Work() {
     }
 
-    public Work(Long id, String title, WorkType workType, String details, String authors, String subjects, List<Edition> edition) {
+    public Work(Long id, String title, WorkType workType, String details, List<Author> authors, List<Subject> subjects, List<Edition> edition) {
         this.id = id;
         this.title = title;
         this.workType = workType;
@@ -67,19 +71,19 @@ public class Work {
         this.details = details;
     }
 
-    public String getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(String authors) {
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
 
-    public String getSubjects() {
+    public List<Subject> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(String subjects) {
+    public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
     }
 
@@ -95,4 +99,12 @@ public class Work {
         editions.add(edition);
         edition.setWork(this);
     }
-}
+
+    public void addAuthor(Author author) {
+        authors.add(author);
+    }
+
+    public void addSubject(Subject subject) {
+        subjects.add(subject);
+    }
+ }

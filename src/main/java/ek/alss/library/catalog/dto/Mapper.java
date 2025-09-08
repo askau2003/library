@@ -1,8 +1,6 @@
 package ek.alss.library.catalog.dto;
 
-import ek.alss.library.catalog.model.Edition;
-import ek.alss.library.catalog.model.Publisher;
-import ek.alss.library.catalog.model.Work;
+import ek.alss.library.catalog.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +14,26 @@ public class Mapper {
             editions.add(toDto(edition));
         }
 
+        List<AuthorDto> authors = new ArrayList<>();
+
+        for (var author : work.getAuthors()) {
+            authors.add(toDto(author));
+        }
+
+        List<SubjectDto> subjects = new ArrayList<>();
+
+        for (var subject : work.getSubjects()) {
+            subjects.add(toDto(subject));
+        }
+
         return new WorkDto(
                 work.getId(),
                 work.getTitle(),
                 work.getWorkType(),
                 work.getDetails(),
-                work.getAuthors(),
+                authors,
                 editions,
-                work.getSubjects()
+                subjects
         );
     }
 
@@ -34,14 +44,21 @@ public class Mapper {
         work.setTitle(workDto.title());
         work.setWorkType(workDto.workType());
         work.setDetails(workDto.details());
-        work.setAuthors(workDto.author());
+
+        for (var authorDto : workDto.authors()) {
+            var author = toEntity(authorDto);
+            work.addAuthor(author);
+        }
 
         for (var editionDto : workDto.editions()) {
             var edition = toEntity(editionDto);
             work.addEdition(edition);
         }
 
-        work.setSubjects(workDto.subjects());
+        for (var subjectDto : workDto.subjects()) {
+            var subject = toEntity(subjectDto);
+            work.addSubject(subject);
+        }
 
         return work;
     }
@@ -82,5 +99,33 @@ public class Mapper {
         publisher.setAddress(publisherDto.address());
         publisher.setContactInfo(publisherDto.contactInfo());
         return publisher;
+    }
+
+    public static AuthorDto toDto(Author author) {
+        return new AuthorDto(
+                author.getId(),
+                author.getName()
+        );
+    }
+
+    public static Author toEntity(AuthorDto authorDto) {
+        Author author = new Author();
+        author.setId(authorDto.id());
+        author.setName(authorDto.name());
+        return author;
+    }
+
+    public static SubjectDto toDto(Subject subject) {
+        return new SubjectDto(
+                subject.getId(),
+                subject.getName()
+        );
+    }
+
+    public static Subject toEntity(SubjectDto subjectDto) {
+        Subject subject = new Subject();
+        subject.setId(subjectDto.id());
+        subject.setName(subjectDto.name());
+        return subject;
     }
 }
